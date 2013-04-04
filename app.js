@@ -71,3 +71,39 @@ app.get("/sad.json", function(req, res) {
         };
     });
  });
+
+app.get("/happyTotal.json", function(req, res) {
+    redisClient.mget(happyWords, function(error, counts) {
+    	if (error !== null) {
+            // handle error here                                                                                                                       
+            console.log("ERROR: " + error);
+        } else {
+        	var happyTotal = [];
+        	for(var i = 0; i < happyWords.length; i++){
+	               happyTotal.push({
+	            	 "counts" : counts[i]
+	               }); 
+	        };	
+	     // use res.json to return JSON objects instead of strings
+	        res.json(happyTotal);
+        };
+    });
+ });
+
+app.get("/sadTotal.json", function(req, res) {
+    redisClient.mget(sadWords, function(error, counts) {
+    	if (error !== null) {
+            // handle error here                                                                                                                       
+            console.log("ERROR: " + error);
+        } else {
+        	var sadTotal = [];
+        	for(var i = 0; i < sadWords.length; i++){
+	               sadTotal.push({
+	            	 "counts" : counts[i]
+	               }); 
+	        };	
+	     // use res.json to return JSON objects instead of strings
+	        res.json(sadTotal);
+        };
+    });
+ });

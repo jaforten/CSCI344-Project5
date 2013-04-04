@@ -6,6 +6,9 @@ var express = require("express"),
     path = require("path"),
     redisClient = require("redis").createClient(),
     app = express();
+	twitterWorker = require("./twitter.js");
+
+trackedWords = ['awesome', 'cool', 'rad', 'gnarly', 'groovy'];
 
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
@@ -13,28 +16,38 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
+//create twitterWorker
+twitterWorker(trackedWords);
+
 // Create the http server and get it to                                                                                                                
 // listen on the specified port 3000                                                                                                                   
 http.createServer(app).listen(3000, function(){
     console.log("Express server listening on port 3000");
 });
 
+
 app.get("/", function (req, res) {
     //send "Hello World" to the client as html
     res.send("Hello World!");
 });
 
-app.get("/counts.json", function	(req, res) {
-    redisClient.get("awesome", function	(error, awesomeCount) {
-	if (error !== null) {
+app.get("/counts.json", function(req, res) {
+    redisClient.mget(trackedWords, function(error, counts) {
+    	if (error !== null) {
             // handle error here                                                                                                                       
             console.log("ERROR: " + error);
         } else {
-            var jsonObject = {
-		"awesome":awesomeCount
-            };
+        	var results = [];
+        	for(var i = 0; i < trackedWords.length; i++){
+	               results.push({
+	            	   "key" : trackedWords[i],
+	               	   "counts" : counts[i]
+	               }); 
+	        };	
+        	
+        	 
+            res.json(results);
+          };
             // use res.json to return JSON objects instead of strings
-            res.json(jsonObject);
-        }
     });
-});
+ });

@@ -8,7 +8,9 @@ var express = require("express"),
     app = express();
 	twitterWorker = require("./twitter.js");
 
-trackedWords = ['awesome', 'cool', 'rad', 'gnarly', 'groovy'];
+happyWords = ['awesome', 'cool', 'rad', 'sweet', 'fantastic'];
+sadWords = ['horrible','hate','sad'];
+trackedWords = happyWords.concat(sadWords);
 
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
@@ -28,26 +30,44 @@ http.createServer(app).listen(3000, function(){
 
 app.get("/", function (req, res) {
     //send "Hello World" to the client as html
-    res.send("Hello World!");
+    res.send("HEY!!");
 });
 
-app.get("/counts.json", function(req, res) {
-    redisClient.mget(trackedWords, function(error, counts) {
+app.get("/happy.json", function(req, res) {
+    redisClient.mget(happyWords, function(error, counts) {
     	if (error !== null) {
             // handle error here                                                                                                                       
             console.log("ERROR: " + error);
         } else {
-        	var results = [];
-        	for(var i = 0; i < trackedWords.length; i++){
-	               results.push({
-	            	   "key" : trackedWords[i],
+        	var happy = [];
+        	for(var i = 0; i < happyWords.length; i++){
+	               happy.push({
+	            	   "key" : happyWords[i],
 	               	   "counts" : counts[i]
 	               }); 
 	        };	
-        	
-        	 
-            res.json(results);
-          };
-            // use res.json to return JSON objects instead of strings
+	        
+	     // use res.json to return JSON objects instead of strings
+	        res.json(happy);
+        };
+    });
+ });
+
+app.get("/sad.json", function(req, res) {
+    redisClient.mget(sadWords, function(error, counts) {
+    	if (error !== null) {
+            // handle error here                                                                                                                       
+            console.log("ERROR: " + error);
+        } else {
+        	var sad = [];
+        	for(var i = 0; i < sadWords.length; i++){
+	               sad.push({
+	            	   "key" : sadWords[i],
+	               	   "counts" : counts[i]
+	               }); 
+	        };	
+	     // use res.json to return JSON objects instead of strings
+	        res.json(sad);
+        };
     });
  });

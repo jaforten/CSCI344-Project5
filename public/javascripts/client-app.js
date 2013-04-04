@@ -3,19 +3,32 @@
 var main = function () {
 	
 	
-    $.getJSON("/counts.json", function (response) {
-    	response.forEach(function(display){
-        $("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    $.getJSON("/happy.json", function (result) {
+    	result.forEach(function(display){
+    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    	});
+    });
+    
+    $.getJSON("/sad.json", function (result) {
+    	result.forEach(function(display){
+    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
     	});
     });
     setInterval(function(){
     	$("p").remove();
-    	$.getJSON("/counts.json", function (response) {
-        	response.forEach(function(display){
-            $("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
-        	});
-    	});
-	},5000 );
+    	  $.getJSON("/happy.json", function (result) {
+    	    	result.forEach(function(display){
+    	    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    	    	});
+    	  });
+    	    
+    	  $.getJSON("/sad.json", function (result) {
+    	    	result.forEach(function(display){
+    	    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    	    	});
+    	  });
+    	
+	},2000 );
 };
 
 $(document).ready(main);

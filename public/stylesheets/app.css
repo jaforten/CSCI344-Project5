@@ -1,0 +1,60 @@
+body {
+  background: #CACAFF;
+  text-align: left;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 1em;
+}
+
+h1{
+  background:  #DDDDFF;
+  border-bottom: 2px solid black;
+}
+
+.wrapper{
+  background: #CACAFF;
+  height: 100%;
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px
+  vertical-align: top; 
+  vertical-align: bottom; 
+}
+.happy{
+  background: #CACAFF;
+  width: 10%;
+  height: 30%;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px
+  sup { vertical-align: top; font-size: 0.6em; }
+  sup { vertical-align: bottom; font-size: 0.6em; }
+
+}
+
+.sad{
+  background: #CACAFF;
+  width: 10%;
+  float: right;
+  margin: 0px;
+  padding: 0px;
+  sup { vertical-align: top; font-size: 0.6em; }
+}
+
+.feelingHappy{
+  background: #CACAFF
+  height: auto;
+  border: 2px solid black;
+  float: left;
+  margin: 2px;
+  width: auto;
+}
+
+.feelingSad{
+  background: #CACAFF
+  border: 2px solid black;
+  float: right;
+  margin: 2px;
+  width: auto;
+}
+

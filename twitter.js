@@ -1,4 +1,5 @@
 var worker = function (trackedWords) {
+	"use strict";
 	var twitter = require('ntwitter');
 	var redis = require('redis');
 	var credentials = require('./credentials.js');

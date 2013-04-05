@@ -8,12 +8,13 @@ var express = require("express"),
     app = express();
 	twitterWorker = require("./twitter.js");
 
-happyWords = ['awesome', 'nice', 'rad', 'sweet', 'fantastic'];
-sadWords = ['horrible','hate','sad','terrible','bad'];
+happyWords = ['awesome', 'nice', 'rad', 'sweet', 'fantastic','love'];
+sadWords = ['horrible','hate','sad','terrible','bad','stupid'];
 trackedWords = happyWords.concat(sadWords);
 
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
+	"use strict";
     // Define our static file directory, it will be 'public'                                                                                           
     app.use(express.static(path.join(__dirname, 'public')));
 });

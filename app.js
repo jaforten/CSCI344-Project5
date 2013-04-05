@@ -8,8 +8,8 @@ var express = require("express"),
     app = express();
 	twitterWorker = require("./twitter.js");
 
-happyWords = ['awesome', 'cool', 'rad', 'sweet', 'fantastic'];
-sadWords = ['horrible','hate','sad'];
+happyWords = ['awesome', 'nice', 'rad', 'sweet', 'fantastic'];
+sadWords = ['horrible','hate','sad','terrible','bad'];
 trackedWords = happyWords.concat(sadWords);
 
 // This is our basic configuration                                                                                                                     

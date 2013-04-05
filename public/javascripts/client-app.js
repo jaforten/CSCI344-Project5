@@ -5,52 +5,52 @@ var main = function () {
 	
     $.getJSON("/happy.json", function (happyCount) {
     	happyCount.forEach(function(display){
-    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    		$(".happy").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
     	});
     });
     
     $.getJSON("/sad.json", function (sadCount) {
     	sadCount.forEach(function(display){
-    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    		$(".sad").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
     	});
     });
     
     $.getJSON("/happyTotal.json", function (happyTotal) {
 		totalAry = [];
-	    total = 0;
+	    totalForHappy = 0;
 	    happyTotal.forEach(function(totalCount){
 	    	totalAry.push(totalCount.counts);
 	    });
 	    for(var i = 0; i < totalAry.length; i++){
 	    	n = parseInt(totalAry[i], 10);
 	    	if(!isNaN(n)){
-	    		total += n;
+	    		totalForHappy += n;
 	    	};
 	    };
-	    $("body").append("<p>" + "Happy Total:" + " " + total  + "</p>");
+	    $(".happy").append("<p>" + "Happy Total:" + " " + totalForHappy  + "</p>");
 	 });
     
     
     $.getJSON("/sadTotal.json", function (sadTotal) {
 		totalAry = [];
-	    total = 0;
+	    totalForSad = 0;
 	    sadTotal.forEach(function(totalCount){
 	    	totalAry.push(totalCount.counts);
 	    });
 	    for(var i = 0; i < totalAry.length; i++){
 	    	n = parseInt(totalAry[i], 10);
 	    	if(!isNaN(n)){
-	    		total += n;
+	    		totalForSad += n;
 	    	};
 	    };
-	    $("body").append("<p>" + "sad Total:" + " " + total  + "</p>");
+	    $(".sad").append("<p>" + "sad Total:" + " " + totalForSad  + "</p>");
 	});
     
     setInterval(function(){
     	$("p").remove();
     	  $.getJSON("/happy.json", function (result) {
     	    	result.forEach(function(display){
-    	    		$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    	    		$(".happy").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
     	    	});
     	  });
     },2000 );	    
@@ -58,45 +58,59 @@ var main = function () {
     setInterval(function(){
     	$.getJSON("/sad.json", function (result) {
     		result.forEach(function(display){
-    			$("body").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
+    			$(".sad").append("<p>" + display.key + ":" + " " + display.counts  + "</p>");
     	    });
     	});
     },2000 );		  
     	  
-    setInterval(function(){
-    	 $.getJSON("/happyTotal.json", function (happyTotal) {
-    			totalAry = [];
-    		    total = 0;
-    		    happyTotal.forEach(function(totalCount){
-    		    	totalAry.push(totalCount.counts);
-    		    });
-    		    for(var i = 0; i < totalAry.length; i++){
-    		    	n = parseInt(totalAry[i], 10);
-    		    	if(!isNaN(n)){
-    		    		total += n;
-    		    	};
-    		    };
-    		    $("body").append("<p>" + "Happy Total:" + " " + total  + "</p>");
-    		 });
-    },2000 );
 
-
-    setInterval(function(){
-    	$.getJSON("/sadTotal.json", function (sadTotal) {
+    setInterval(function(){	
+    	$.getJSON("/happyTotal.json", function (happyTotal) {
     		totalAry = [];
-		    total = 0;
-		    sadTotal.forEach(function(totalCount){
-		    	totalAry.push(totalCount.counts);
-		    });
-		    for(var i = 0; i < totalAry.length; i++){
-		    	n = parseInt(totalAry[i], 10);
-		    	if(!isNaN(n)){
-		    		total += n;
-		    	};
-		    };
-		    $("body").append("<p>" + "Sad Total:" + " " + total  + "</p>");
-    	});
+    	    totalForHappy = 0;
+    		happyTotal.forEach(function(totalCount){
+    			totalAry.push(totalCount.counts);
+    		});
+    		for(var i = 0; i < totalAry.length; i++){
+    			n = parseInt(totalAry[i], 10);
+    		    if(!isNaN(n)){
+    		    	window.totalForHappy += n;
+    		    };
+    		};
+    		$(".happy").append("<p>" + "Happy Total:" + " " + totalForHappy  + "</p>");
+    		
+    	 });
     },2000 );
+ 	 
+    setInterval(function(){	
+    	 $.getJSON("/sadTotal.json", function (sadTotal) {
+    		 totalAry = [];
+    	     totalForSad = 0;
+    		 sadTotal.forEach(function(totalCount){
+		    	 totalAry.push(totalCount.counts);
+		     });
+		     for(var i = 0; i < totalAry.length; i++){
+		    	 n = parseInt(totalAry[i], 10);
+		    	 if(!isNaN(n)){
+		    		window.totalForSad += n;
+		    	 };
+		    };
+		    happyOrSad();
+		     $(".sad").append("<p>" + "Sad Total:" + " " + totalForSad  + "</p>");
+		
+    	 });
+    },2000 );	
+  
+ 
+    	function happyOrSad(){
+    		if (window.totalForHappy > window.totalForSad){
+    			$('.feelingSad').hide('slow');
+    			$('.feelingHappy').show('slow');
+    		} else {
+    			$('.feelingHappy').hide('slow');
+    			$('.feelingSad').show('slow');
+    		} 
+    	};	
 };
 
 $(document).ready(main);

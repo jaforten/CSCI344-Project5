@@ -1,110 +1,25 @@
-
-// We need to 'require' the                                                                                                                            
-// following modules                                                                                                                    
-var express = require("express"),
-    http = require("http"),
+var http = require("http"),
+	express = require("express"),
     path = require("path"),
-    redisClient = require("redis").createClient(),
-    app = express();
-	twitterWorker = require("./twitter.js");
-
-happyWords = ['awesome', 'nice', 'rad', 'sweet', 'fantastic','love'];
-sadWords = ['horrible','hate','sad','terrible','bad','stupid'];
-trackedWords = happyWords.concat(sadWords);
-
+    app = express(),
+    tdc;
+// Load Controllers
+tdc = require("./controllers/todo_controller.js");
 // This is our basic configuration                                                                                                                     
 app.configure(function () {
-	"use strict";
+    "use strict";
     // Define our static file directory, it will be 'public'                                                                                           
     app.use(express.static(path.join(__dirname, 'public')));
+    // This allows us to parse the post requests data
+    app.use(express.bodyParser());
 });
-
-//create twitterWorker
-twitterWorker(trackedWords);
-
 // Create the http server and get it to                                                                                                                
 // listen on the specified port 3000                                                                                                                   
 http.createServer(app).listen(3000, function(){
-    console.log("Express server listening on port 3000");
+	"use strict";
+  console.log("Express server listening on port 3000");
 });
 
-
-app.get("/", function (req, res) {
-    //send "Hello World" to the client as html
-    res.send("HEY!!");
-});
-
-app.get("/happy.json", function(req, res) {
-    redisClient.mget(happyWords, function(error, counts) {
-    	if (error !== null) {
-            // handle error here                                                                                                                       
-            console.log("ERROR: " + error);
-        } else {
-        	var happy = [];
-        	for(var i = 0; i < happyWords.length; i++){
-	               happy.push({
-	            	   "key" : happyWords[i],
-	               	   "counts" : counts[i]
-	               }); 
-	        };	
-	        
-	     // use res.json to return JSON objects instead of strings
-	        res.json(happy);
-        };
-    });
- });
-
-app.get("/sad.json", function(req, res) {
-    redisClient.mget(sadWords, function(error, counts) {
-    	if (error !== null) {
-            // handle error here                                                                                                                       
-            console.log("ERROR: " + error);
-        } else {
-        	var sad = [];
-        	for(var i = 0; i < sadWords.length; i++){
-	               sad.push({
-	            	   "key" : sadWords[i],
-	               	   "counts" : counts[i]
-	               }); 
-	        };	
-	     // use res.json to return JSON objects instead of strings
-	        res.json(sad);
-        };
-    });
- });
-
-app.get("/happyTotal.json", function(req, res) {
-    redisClient.mget(happyWords, function(error, counts) {
-    	if (error !== null) {
-            // handle error here                                                                                                                       
-            console.log("ERROR: " + error);
-        } else {
-        	var happyTotal = [];
-        	for(var i = 0; i < happyWords.length; i++){
-	               happyTotal.push({
-	            	 "counts" : counts[i]
-	               }); 
-	        };	
-	     // use res.json to return JSON objects instead of strings
-	        res.json(happyTotal);
-        };
-    });
- });
-
-app.get("/sadTotal.json", function(req, res) {
-    redisClient.mget(sadWords, function(error, counts) {
-    	if (error !== null) {
-            // handle error here                                                                                                                       
-            console.log("ERROR: " + error);
-        } else {
-        	var sadTotal = [];
-        	for(var i = 0; i < sadWords.length; i++){
-	               sadTotal.push({
-	            	 "counts" : counts[i]
-	               }); 
-	        };	
-	     // use res.json to return JSON objects instead of strings
-	        res.json(sadTotal);
-        };
-    });
- });
+app.get("/todo.json", tdc.list);
+app.post("/todo/new", tdc.create);
+app.post("/people/delete", tdc.destroy);

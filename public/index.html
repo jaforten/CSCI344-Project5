@@ -1,23 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-	 <link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
-         <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+    <title>To Do App</title>
+    <link rel="stylesheet" href="stylesheets/app.css">
+    <link href='http://fonts.googleapis.com/css?family=Tauri' rel='stylesheet' type='text/css'>
   </head>
-
+  
   <body>
-    <h1>How are you feeling today twitter?</h1>
-    <div class = wrapper>
-        <div class = happy></div>
-        <div class = sad></div>
-    </div
-    <div class = feelingHappy>
-        <img src="/images/Happy_smiley_face.png" alt="happy" width="100" height="100">
+    <div class= "tabs">
+      <a class= "tab active" href= "all">All</a>
+      <div class= "category">
+        <a class= "tab" href= "categorize">Categorize</a>
+      </div>
+      <a class= "tab" href= "edit">Edit</a>
     </div>
-    <div class = feelingSad>
-        <img src="/images/Frowny-man3.jpg" alt="sad" width="100" height="100">
+    
+    <div class="content">
+      <div class= "tab active" id= "all">
+        <ul></ul>
+      </div>
+      <div class= "tab" id= "categorize">
+        <ul></ul>
+      </div>
+      <div class= "tab" id= "edit">
+        description: <input class= "input" type="text" id= "description" value= "Enter Text!">
+        categories:  <input class= "input" type="text" id="categories" value= "Enter Text!">
+                     <input class= "submit" type= "submit" value="Submit">
+      </div>
+      <div class= "description"></div>
+      <div class= "category"></div>
     </div>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="/javascripts/client-app.js"></script>
+    <script src="javascripts/client-app.js"></script>
   </body>
 </html>
